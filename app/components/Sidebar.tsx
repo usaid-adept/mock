@@ -2,15 +2,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard, Mail, Flame, Users, Tag, Database, Settings, ChevronLeft, ChevronRight, Bell, Shield,
+  LayoutDashboard, Users, Tag, Database, Settings, ChevronLeft, ChevronRight, Bell, Shield,
 } from "lucide-react";
 import { useState } from "react";
 
 const NAV = [
   { href: "/dashboard",   label: "Dashboard",    icon: LayoutDashboard },
   { href: "/users",       label: "Users",        icon: Users            },
-  { href: "/email-pool",  label: "Email Pool",   icon: Mail             },
-  { href: "/warmup",      label: "Warmup",       icon: Flame            },
   { href: "/discounts",   label: "Discounts",    icon: Tag              },
   { href: "/crm",         label: "CRM Sync",     icon: Database         },
   { href: "/settings",    label: "Settings",     icon: Settings         },

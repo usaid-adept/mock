@@ -1,6 +1,6 @@
 "use client";
-import { creditServices, users, emailAccounts, CreditService } from "../lib/data";
-import { Users, Flame, AlertTriangle, TrendingUp, CheckCircle2 } from "lucide-react";
+import { creditServices, users, CreditService } from "../lib/data";
+import { Users, AlertTriangle, TrendingUp, CheckCircle2 } from "lucide-react";
 
 function CreditCard({ svc }: { svc: CreditService }) {
   const isUsedOnly   = svc.displayMode === "used_only";
@@ -80,7 +80,6 @@ function CreditCard({ svc }: { svc: CreditService }) {
 export default function DashboardPage() {
   const totalUsers  = users.length;
   const activeUsers = users.filter(u => u.status === "active").length;
-  const warmingEmails = emailAccounts.filter(e => e.warmupStatus === "in_progress").length;
   const alertServices = creditServices.filter(s =>
     s.totalCredits !== null && (s.usedCredits / s.totalCredits) * 100 >= s.alertThreshold
   );
@@ -89,14 +88,13 @@ export default function DashboardPage() {
 
   const stats = [
     { label: "Total Users",    value: totalUsers,    sub: `${activeUsers} active`,      icon: Users,         color: "bg-violet-100 text-violet-600" },
-    { label: "Warming Up",     value: warmingEmails, sub: "email accounts in warmup",   icon: Flame,         color: "bg-amber-100 text-amber-600"   },
     { label: "Credit Alerts",  value: alertServices.length, sub: "services near limit", icon: AlertTriangle, color: "bg-rose-100 text-rose-600"     },
   ];
 
   return (
     <div className="space-y-6">
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         {stats.map((s) => (
           <div key={s.label} className="bg-white rounded-2xl p-5 border border-purple-100 shadow-sm flex items-start gap-4">
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${s.color}`}>
@@ -111,7 +109,7 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 gap-6">
         {/* Recent Signups */}
         <div className="col-span-1 bg-white rounded-2xl border border-purple-100 shadow-sm p-5">
           <div className="flex items-center gap-2 mb-4">
@@ -135,41 +133,6 @@ export default function DashboardPage() {
                 }`}>{u.status}</span>
               </div>
             ))}
-          </div>
-        </div>
-
-        {/* Warmup Status */}
-        <div className="col-span-1 bg-white rounded-2xl border border-purple-100 shadow-sm p-5">
-          <div className="flex items-center gap-2 mb-4">
-            <Flame size={16} className="text-orange-500" />
-            <h2 className="font-semibold text-sm text-slate-800">Warmup Overview</h2>
-          </div>
-          <div className="space-y-3">
-            {(["not_started","in_progress","completed","assigned"] as const).map((status) => {
-              const count = emailAccounts.filter(e => e.warmupStatus === status).length;
-              const labels: Record<string, string> = { not_started: "Not Started", in_progress: "In Progress", completed: "Completed", assigned: "Assigned" };
-              const colors: Record<string, string> = { not_started: "bg-slate-200", in_progress: "bg-amber-400", completed: "bg-emerald-400", assigned: "bg-violet-500" };
-              const pct = Math.round((count / emailAccounts.length) * 100);
-              return (
-                <div key={status}>
-                  <div className="flex justify-between text-xs mb-1">
-                    <span className="text-slate-600">{labels[status]}</span>
-                    <span className="font-semibold text-slate-800">{count}</span>
-                  </div>
-                  <div className="h-1.5 bg-slate-100 rounded-full">
-                    <div className={`h-full rounded-full ${colors[status]}`} style={{ width: `${pct}%` }} />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <div className="mt-4 pt-4 border-t border-slate-100">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 size={14} className="text-emerald-500" />
-              <p className="text-xs text-slate-600">
-                <strong>{emailAccounts.filter(e => e.assignedTo).length}</strong> accounts assigned to workflows
-              </p>
-            </div>
           </div>
         </div>
 

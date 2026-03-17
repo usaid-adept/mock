@@ -5,8 +5,6 @@ import { usePathname } from "next/navigation";
 const TITLES: Record<string, string> = {
   "/dashboard":  "Dashboard",
   "/users":      "User Management",
-  "/email-pool": "Email Pool",
-  "/warmup":     "Warmup Manager",
   "/discounts":  "Discounts",
   "/crm":        "CRM Sync",
   "/settings":   "Settings",
